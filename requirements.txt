@@ -1,0 +1,36 @@
+# StemKit — install with install.bat, or follow the notes below.
+anthropic>=0.40      # Anthropic SDK for native Claude API — agent.py
+mcp>=1.2             # MCP server / FastMCP (mcp_server.py)
+mido>=1.3            # MIDI file writing (core/midiout.py)
+numpy>=1.24          # analysis maths
+librosa>=0.10        # tempo, key, chroma, drum onsets (core/analyze.py)
+soundfile>=0.12      # librosa's audio backend
+demucs>=4.0          # stem separation — pulls in torch (~2GB download)
+
+# basic-pitch's runtime dependencies, installed explicitly.
+#
+# basic-pitch 0.4.0 declares a hard dependency on tensorflow<2.15.1 for
+# Windows on Python >= 3.11, and TensorFlow has no Windows wheel for 3.12 —
+# so a plain `pip install basic-pitch` cannot resolve and dies trying to build
+# an ancient numpy from source. It ships four interchangeable backends though,
+# so installing it with --no-deps and supplying onnxruntime works fine:
+#
+#     pip install --no-deps basic-pitch
+#
+# install.bat does this for you.
+onnxruntime>=1.17    # the backend basic-pitch actually runs on here
+pretty-midi>=0.2.9
+mir-eval>=0.6
+scikit-learn
+resampy>=0.2.2,<0.4.3
+setuptools<81        # resampy imports pkg_resources, dropped in setuptools 81
+
+# Optional, install if you want them:
+#   piano_transcription_inference   much better piano than basic-pitch
+#   yt-dlp                          import audio from a URL
+#
+# Also required on PATH, not installable via pip:
+#   ffmpeg / ffprobe   audio decoding and transcoding
+#
+# For GPU separation, install CUDA torch BEFORE demucs:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
